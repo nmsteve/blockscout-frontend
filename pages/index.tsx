@@ -5,6 +5,7 @@ import type { NextPageWithLayout } from 'nextjs/types';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import Home from 'ui/pages/Home';
+//import LoginForm from 'ui/pages/loginForm'; // ✅ Capitalized component name
 import LayoutHome from 'ui/shared/layout/LayoutHome';
 
 const Page: NextPageWithLayout = () => {

@@ -1,0 +1,17 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3045:3035"
+    env_file:
+      - .env
+    environment:
+      - PORT=3035
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    entrypoint: [ "./entrypoint.sh" ]

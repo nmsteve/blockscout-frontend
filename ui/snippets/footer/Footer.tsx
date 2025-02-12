@@ -1,13 +1,16 @@
+/* eslint-disable no-console */
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, Link, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Icon, Box, Grid, Flex, Text, Link, VStack, useColorModeValue } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { FiLogOut } from 'react-icons/fi'; // Importing a logout icon from react-icons
 
 import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useAuth } from 'lib/contexts/auth';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
 import { copy } from 'lib/html-entities';
@@ -26,6 +29,12 @@ const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config
 const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
 
 const Footer = () => {
+
+  const { logout } = useAuth();
+  const handleLogout = useCallback(() => {
+    console.log('Logging out...');
+    logout();
+  }, [ logout ]); // Include logout in the dependency array
 
   const { data: backendVersionData } = useApiQuery('config_backend_version', {
     queryOptions: {
@@ -259,6 +268,24 @@ const Footer = () => {
         >
           { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
         </Grid>
+        { /* Log Out Button - Bottom Right */ }
+        <Flex
+          gridArea={{ lg: 'links-bottom' }}
+          justifyContent="flex-end"
+          alignItems="flex-end"
+          mt={ 4 }
+          pr={ 4 }
+          mr={ 10 }
+        >
+          <Box mr={ 4 } alignItems="start" fontSize="xs" lineHeight={ 5 } display="flex" cursor="pointer" onClick={ handleLogout }>
+            <Icon as={ FiLogOut } w={ 4 } h={ 4 } mr={ 2 }/>
+            <Text fontWeight="bold" color="red.500">
+              Log out
+            </Text>
+          </Box>
+
+        </Flex>
+
       </Grid>
     </Box>
   );

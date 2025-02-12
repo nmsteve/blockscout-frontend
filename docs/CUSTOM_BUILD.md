@@ -7,4 +7,9 @@ For running app container from freshly built image do
 docker run -p 3000:3000 --env-file <path-to-your-env-file> <your-image-tag>
 ```
 
+e.g
+```sh
+docker run --name frontend -p 3035:3035 --env-file .env frontend_frontend
+```
+
 *Disclaimer* Do not try to generate production build of the app on your local machine (outside the docker). The app will not work as you would expect.

@@ -1,7 +1,7 @@
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
 import { getEnvValue } from './utils';
-
+const authUrl = getEnvValue('NEXT_PUBLIC_AUTH_URL');
 const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
 const apiSchema = getEnvValue('NEXT_PUBLIC_API_PROTOCOL') || 'https';
 const apiPort = getEnvValue('NEXT_PUBLIC_API_PORT');
@@ -21,6 +21,7 @@ const socketEndpoint = [
 ].filter(Boolean).join('');
 
 const api = Object.freeze({
+  authUrl: authUrl,
   host: apiHost,
   protocol: apiSchema,
   port: apiPort,

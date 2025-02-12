@@ -18,6 +18,8 @@ docker run -p 3000:3000 --env-file <path-to-your-env-file> ghcr.io/blockscout/fr
 
 Alternatively, you can build your own docker image and run your app from that. Please follow this [guide](./docs/CUSTOM_BUILD.md).
 
+
+
 For more information on migrating from the previous frontend, please see the [frontend migration docs](https://docs.blockscout.com/for-developers/frontend-migration).
 
 ## Contributing

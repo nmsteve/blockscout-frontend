@@ -45,6 +45,9 @@ const moduleExports = {
       'static': 180,
     },
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));

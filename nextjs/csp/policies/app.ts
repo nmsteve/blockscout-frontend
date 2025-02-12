@@ -42,6 +42,7 @@ export function app(): CspDev.DirectiveDescriptor {
       // APIs
       config.api.endpoint,
       config.api.socket,
+      config.api.authUrl,
       getFeaturePayload(config.features.stats)?.api.endpoint,
       getFeaturePayload(config.features.sol2uml)?.api.endpoint,
       getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
