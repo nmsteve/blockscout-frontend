@@ -1,0 +1,59 @@
+server {
+    # Listen for both HTTP and HTTPS
+    listen 80;
+    listen 443 ssl;
+
+    server_name bc0.wirich-ventures.com;
+
+    # SSL Certificate Configuration
+    ssl_certificate /etc/letsencrypt/live/bc0.wirich-ventures.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bc0.wirich-ventures.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    # Redirect all HTTP traffic to HTTPS
+    if ($scheme = http) {
+        return 301 https://$host$request_uri;
+    }
+
+    # API configuration: forward /api/ to the API backend (localhost:4000)
+    location /api/ {
+        proxy_pass http://localhost:4000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        # CORS Headers (if necessary)
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'Origin, Content-Type, Accept, Authorization' always;
+        add_header 'Access-Control-Allow-Credentials' 'true' always;
+    }
+
+    # Blockscout backend configuration: forward /bs/ to the backend (localhost:5000)
+    location /bs/ {
+        proxy_pass http://localhost:5000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'Origin, Content-Type, Accept, Authorization' always;
+        add_header 'Access-Control-Allow-Credentials' 'true' always;
+    }
+
+    # Blockscout frontend configuration: forward all other requests to the frontend (localhost:6000)
+    location / {
+        proxy_pass http://localhost:6000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
